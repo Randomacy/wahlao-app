@@ -1,0 +1,97 @@
+"use client";
+import { useState } from "react";
+import DataSourceCard from "@/components/DataSourceCard";
+import Modal from "@/components/Modal";
+import UploadCustomerData from "@/components/UploadCustomerData";
+
+export default function ConnectDataPage() {
+  // State to track connected sources
+  const [connectedSources, setConnectedSources] = useState<string[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // State to track which source is being connected
+  const [currentSource, setCurrentSource] = useState<string | null>(null);
+
+  // Handle source connection/disconnection
+  const toggleConnection = (source: string) => {
+    if (connectedSources.includes(source)) {
+      setConnectedSources(connectedSources.filter((item) => item !== source));
+    } else {
+      if (source === "Customer Data") {
+        setCurrentSource(source);
+        setIsModalOpen(true);
+      } else {
+        setConnectedSources([...connectedSources, source]);
+      }
+    }
+  };
+
+  // List of data sources
+  const dataSources = [
+    {
+      name: "Customer Data",
+      description: "Migrate and manage your Excel customer dataset.",
+      icon: "👥",
+    },
+    {
+      name: "Google Calendar",
+      description: "Sync events and updates directly to your calendar.",
+      icon: "📅",
+    },
+    {
+      name: "Google Drive",
+      description: "Access artist and artwork information from stored files.",
+      icon: "📂",
+    },
+    {
+      name: "Branding Document",
+      description: "Upload or manage your brand guidelines.",
+      icon: "🎨",
+    },
+    {
+      name: "WhatsApp",
+      description: "Sync messages and send automated updates to clients.",
+      icon: "📲",
+    },
+    {
+      name: "Newsletter App",
+      description: "Manage and analyze newsletter performance.",
+      icon: "📰",
+    },
+  ];
+
+  return (
+    <div className="flex flex-col flex-1 p-6 space-y-6 overflow-hidden">
+      {/* Main Heading */}
+      <h1 className="text-3xl font-bold">Connect Data Sources</h1>
+
+      {/* Grid Layout for Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {dataSources.map((source) => (
+          <DataSourceCard
+            key={source.name}
+            name={source.name}
+            description={source.description}
+            icon={source.icon}
+            isConnected={connectedSources.includes(source.name)}
+            onToggle={() => toggleConnection(source.name)}
+          />
+        ))}
+      </div>
+
+      {/* Modal for Customer Data */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Upload Customer Data"
+      >
+        <UploadCustomerData
+          onClose={() => setIsModalOpen(false)}
+          onUploadSuccess={() =>
+            setConnectedSources([...connectedSources, "Customer Data"])
+          }
+        />
+      </Modal>
+    </div>
+  );
+}
