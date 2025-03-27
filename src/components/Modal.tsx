@@ -40,7 +40,7 @@ export default function Modal({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50"
+      className="fixed inset-0 bg-opacity-30 flex justify-center items-center z-50"
       style={{ backdropFilter: "blur(4px)" }} // Optional blur for a glassy effect
     >
       <div
