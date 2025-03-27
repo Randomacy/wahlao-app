@@ -8,14 +8,21 @@ type UploadProps = {
   onUploadSuccess: () => void;
 };
 
-export default function UploadCustomerData({ onClose, onUploadSuccess }: UploadProps) {
+export default function UploadCustomerData({
+  onClose,
+  onUploadSuccess,
+}: UploadProps) {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const router = useRouter();
 
   // Handle File Upload
   const handleUpload = async () => {
-    if (!file) return alert("Please upload a file first!");
+    if (!file) {
+      alert("Please upload a file first!");
+      return;
+    }
+
     setUploading(true);
 
     // Upload file to Supabase Storage
@@ -41,7 +48,7 @@ export default function UploadCustomerData({ onClose, onUploadSuccess }: UploadP
       return;
     }
 
-    // Send notification email
+    // Send notification email (Optional)
     await fetch("/api/send-email", {
       method: "POST",
       body: JSON.stringify({
@@ -50,28 +57,42 @@ export default function UploadCustomerData({ onClose, onUploadSuccess }: UploadP
       }),
     });
 
-    alert("File uploaded successfully!");
+    alert("✅ File uploaded successfully!");
     setUploading(false);
     onUploadSuccess(); // Mark as connected
     onClose(); // Close modal
   };
 
   return (
-    <div className="space-y-4">
-      <input
-        type="file"
-        accept=".xlsx, .csv"
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-        className="w-full border p-2 rounded-md"
-      />
+    <div className="space-y-6">
+      {/* Informative Text */}
+      <p className="text-sm text-gray-600 leading-relaxed">
+        Upload an Excel or CSV file containing your customer data. This file
+        will be stored securely and used to generate personalized newsletters
+        and messages.
+      </p>
+
+      {/* File Input */}
+      <div className="flex items-center space-x-4">
+        <input
+          type="file"
+          accept=".xlsx, .csv"
+          onChange={(e) => setFile(e.target.files?.[0] || null)}
+          className="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      {/* Upload Button - Polished Version */}
       <button
         onClick={handleUpload}
-        className={`w-full p-2 text-white rounded-md ${
-          uploading ? "bg-gray-500 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+        className={`w-full p-3 text-white rounded-lg ${
+          uploading
+            ? "bg-gray-500 cursor-not-allowed"
+            : "bg-blue-600 hover:bg-blue-700 transition-transform transform hover:scale-105"
         }`}
         disabled={uploading}
       >
-        {uploading ? "Uploading..." : "Upload File"}
+        {uploading ? "Uploading..." : "🚀 Upload File"}
       </button>
     </div>
   );
