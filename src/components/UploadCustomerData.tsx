@@ -16,6 +16,17 @@ export default function UploadCustomerData({
   const [uploading, setUploading] = useState(false);
   const router = useRouter();
 
+  // Handle File Selection
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0] || null;
+    setFile(selectedFile);
+  };
+
+  // Remove Selected File
+  const removeFile = () => {
+    setFile(null);
+  };
+
   // Handle File Upload
   const handleUpload = async () => {
     if (!file) {
@@ -72,17 +83,41 @@ export default function UploadCustomerData({
         and messages.
       </p>
 
-      {/* File Input */}
-      <div className="flex items-center space-x-4">
-        <input
-          type="file"
-          accept=".xlsx, .csv"
-          onChange={(e) => setFile(e.target.files?.[0] || null)}
-          className="w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+      {/* File Input with Improved Aesthetics */}
+      <div className="border-2 border-dashed border-gray-300 p-4 rounded-lg text-center relative">
+        {file ? (
+          <div className="flex items-center justify-between bg-gray-100 p-2 rounded-md">
+            <span className="text-sm text-gray-700">{file.name}</span>
+            <button
+              onClick={removeFile}
+              className="text-red-500 hover:text-red-600 ml-2 text-sm font-bold"
+            >
+              ✕
+            </button>
+          </div>
+        ) : (
+          <>
+            <label
+              htmlFor="file-upload"
+              className="cursor-pointer text-blue-600 hover:underline"
+            >
+              📂 Choose File to Upload
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              accept=".xlsx, .csv"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Supported formats: .xlsx, .csv
+            </p>
+          </>
+        )}
       </div>
 
-      {/* Upload Button - Polished Version */}
+      {/* Upload Button with Better Style */}
       <button
         onClick={handleUpload}
         className={`w-full p-3 text-white rounded-lg ${
