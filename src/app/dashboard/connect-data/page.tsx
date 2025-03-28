@@ -63,7 +63,18 @@ export default function ConnectDataPage() {
   return (
     <div className="flex flex-col flex-1 p-6 space-y-6 overflow-hidden">
       {/* Main Heading */}
-      <h1 className="text-3xl font-bold">Connect Data Sources</h1>
+      <h1 className="text-2xl font-bold">Connect Data Sources</h1>
+
+      {/* Informative Text */}
+      <p className="text-sm text-gray-600 leading-relaxed max-w-3xl mb-2">
+        Connect your data sources so we can craft the perfect newsletters and
+        messages for you to build and maintain relationships with your buyers.
+        We never share, sell, or use your data to train AI models.
+      </p>
+      <p className="text-sm text-gray-600 leading-relaxed max-w-3xl mb-6">
+        Processing can take up to a couple hours. We'll email you when it's
+        ready!
+      </p>
 
       {/* Grid Layout for Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
