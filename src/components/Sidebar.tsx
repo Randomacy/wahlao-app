@@ -49,7 +49,7 @@ export default function Sidebar() {
       {/* Top Section */}
       <div>
         {/* Title */}
-        <div className="text-2xl font-bold mt-8 mb-6 text-center text-gray-700">
+        <div className="text-4xl font-bold mt-8 mb-6 text-center text-gray-700">
           WAH LAO
         </div>
 
