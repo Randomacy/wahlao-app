@@ -3,6 +3,7 @@ import { useState } from "react";
 import DataSourceCard from "@/components/DataSourceCard";
 import Modal from "@/components/Modal";
 import UploadCustomerData from "@/components/UploadCustomerData";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function ConnectDataPage() {
   // State to track connected sources
@@ -13,13 +14,27 @@ export default function ConnectDataPage() {
   const [currentSource, setCurrentSource] = useState<string | null>(null);
 
   // Handle source connection/disconnection
-  const toggleConnection = (source: string) => {
+  const toggleConnection = async (source: string) => {
     if (connectedSources.includes(source)) {
       setConnectedSources(connectedSources.filter((item) => item !== source));
     } else {
       if (source === "Customer Data") {
         setCurrentSource(source);
         setIsModalOpen(true);
+      } else if (source === "Google Calendar") {
+        const { data, error } = await supabase.auth.getUser();
+
+        if (error || !data?.user) {
+          console.error("User not found:", error);
+          alert("You're not logged in.");
+          return;
+        }
+
+        const userId = data.user.id;
+        console.log("Redirecting with user ID:", userId);
+
+        // ✅ Only redirect AFTER you have userId
+        window.location.href = `/api/oauth/google/start?user_id=${userId}`;
       } else {
         setConnectedSources([...connectedSources, source]);
       }
