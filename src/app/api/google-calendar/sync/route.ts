@@ -35,11 +35,11 @@ export async function POST(req: NextRequest) {
 
   const calendar = google.calendar({ version: "v3", auth: oauth2Client });
   console.log("📡 Calling Google Calendar API...");
-  
+
   const now = new Date();
   const oneMonthLater = new Date();
   oneMonthLater.setMonth(now.getMonth() + 1);
-  
+
   try {
     const eventsRes = await calendar.events.list({
       calendarId: "primary",
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       singleEvents: true,
       orderBy: "startTime",
     });
-    console.log("📥 Google Calendar API response:", eventsRes.data);
+    // console.log("📥 Google Calendar API response:", eventsRes.data);
 
     const events = eventsRes.data.items || [];
     const results: { event_id: string; upserted: boolean; error: any }[] = [];
