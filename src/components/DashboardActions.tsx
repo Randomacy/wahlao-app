@@ -7,7 +7,7 @@ export default function DashboardActions() {
   return (
     <div className="space-y-4">
       <button
-        onClick={() => router.push("/dashboard/generate-newsletter")}
+        onClick={() => router.push("/generate-newsletter")}
         className="w-full p-4 bg-gray-800 text-white rounded-lg hover:bg-gray-900"
       >
         ✉️ Generate a newsletter
