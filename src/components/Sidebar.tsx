@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import useLogout from "@/hooks/useLogout";
+import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
   const logout = useLogout();
+  const pathname = usePathname();
 
   // Fetch user profile data
   useEffect(() => {
@@ -56,18 +58,30 @@ export default function Sidebar() {
         {/* Menu - Aligned Directly Below */}
         <nav className="space-y-2">
           <Link href="/dashboard">
-            <div className="p-2 rounded hover:bg-gray-100 cursor-pointer flex items-center space-x-2">
+            <div
+              className={`p-2 rounded cursor-pointer flex items-center space-x-2 ${
+                pathname === "/dashboard"
+                  ? "bg-gray-200 font-semibold text-gray-900"
+                  : "hover:bg-gray-100 text-gray-700"
+              }`}
+            >
               🏠 <span>Dashboard</span>
             </div>
           </Link>
 
           {/* Product Category - Non-clickable */}
           <div className="text-sm font-semibold text-gray-500 mt-4 mb-1">
-          Product
+            Product
           </div>
 
-          <Link href="/dashboard/newsletter">
-            <div className="p-2 rounded hover:bg-gray-100 cursor-pointer flex items-center space-x-2">
+          <Link href="/generate-newsletter">
+            <div
+              className={`p-2 rounded cursor-pointer flex items-center space-x-2 ${
+                pathname.startsWith("/generate-newsletter")
+                  ? "bg-gray-200 font-semibold text-gray-900"
+                  : "hover:bg-gray-100 text-gray-700"
+              }`}
+            >
               📰 <span>Newsletter Generator</span>
             </div>
           </Link>
