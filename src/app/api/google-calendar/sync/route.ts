@@ -35,11 +35,16 @@ export async function POST(req: NextRequest) {
 
   const calendar = google.calendar({ version: "v3", auth: oauth2Client });
   console.log("📡 Calling Google Calendar API...");
-
+  
+  const now = new Date();
+  const oneMonthLater = new Date();
+  oneMonthLater.setMonth(now.getMonth() + 1);
+  
   try {
     const eventsRes = await calendar.events.list({
       calendarId: "primary",
       timeMin: new Date().toISOString(), // upcoming only
+      timeMax: oneMonthLater.toISOString(),
       maxResults: 100,
       singleEvents: true,
       orderBy: "startTime",
